@@ -1,0 +1,55 @@
+{
+    "globals": {
+        "rpm": {
+        },
+        "keypad": {
+            "led_off_brightness": 12,
+            "double_tap_time": 30,
+            "hold_time": 70,
+            "local_ack_time": 0,
+            "flash1_rate": 15,
+            "flash2_rate": 70,
+            "background_brightness": 28
+        }
+    },
+    "devices": [
+        {
+            "type": "HW-RPM-4A-230",
+            "line": 1,
+            "address": 0,
+            "channels": [
+                {
+                    "channel": 0,
+                    "type": "inc_dimmed",
+                    "alias": "testlampe"
+                }
+            ]
+        },
+        {
+            "type": "HWIS-4B",
+            "line": 0,
+            "address": 21,
+            "buttons": [
+                {
+                    "button": 1,
+                    "press": {
+                        "type": "basic",
+                        "toggle": true,
+                        "targets": [
+                            {
+                                "alias": "testlampe",
+                                "on_value": 1.0,
+                                "spread_time": 3.0
+                            }
+                        ]
+                    },
+                    "release": null,
+                    "hold": null,
+                    "double-tap": null,
+
+                    "background_light": true
+                }
+            ]
+        }
+    ]
+}

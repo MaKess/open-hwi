@@ -1,0 +1,346 @@
+living room light on:
+b0 80 1e c0 - 40 00 00 00 00 00 - 00 01 00 00 00 00 - 00 01 00 00 00 00 - 00 00 00 00 00 00 - b0 00
+b0 80 1e c1 - 00 00 00 00 00 00 -<41>00 00 00 00 10 - 00 40 00 00 00 50 - 00 00 00 00 00 00 -<10>00
+b0 80 1e c2 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 01 00 05 00 00 10 - 00 00 05 00 00 10 - c5 00
+b0 80 1e c3 - 00 00 05 00 00 10 - 44 11 00 00 00 00 - 44 00 00 00 00 00 - 00 00 00 00 00 00 - 41 00
+b0 80 1e c4 - 00 01 00 00 00 00 - 04 00 00 00 00 00 - 04 00 00 00 00 00 - 00 00 01 00 00 00 - e4 00
+b0 80 1e c5 - 40 10 00 00 00 00 - 44 10 01 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 48 00
+b0 80 1e c6 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - ec 00
+b0 80 1e c7 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - eb 00
+
+living room light off:
+b0 80 1e c0 - 40 00 00 00 00 00 - 00 01 00 00 00 00 - 00 01 00 00 00 00 - 00 00 00 00 00 00 -  b0 00
+b0 80 1e c1 - 00 00 00 00 00 00 -<00>00 00 00 00 10 - 00 40 00 00 00 50 - 00 00 00 00 00 00 - <51>00
+b0 80 1e c2 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 01 00 05 00 00 10 - 00 00 05 00 00 10 -  c5 00
+b0 80 1e c3 - 00 00 05 00 00 10 - 44 11 00 00 00 00 - 44 00 00 00 00 00 - 00 00 00 00 00 00 -  41 00
+b0 80 1e c4 - 00 01 00 00 00 00 - 04 00 00 00 00 00 - 04 00 00 00 00 00 - 00 00 01 00 00 00 -  e4 00
+b0 80 1e c5 - 40 10 00 00 00 00 - 44 10 01 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 -  48 00
+b0 80 1e c6 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 -  ec 00
+b0 80 1e c7 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 - 00 00 00 00 00 00 -  eb 00
+^  ^  ^  ^    ^                                                                                ^
+|  |  |  |    LED masks                                                                        Checksum
+|  |  |  Destination/Subtype? (multiple devices will have to pick up this packet)
+|  |  Length (0x1e == 30)
+|  Type?
+Start
+
+DL, [01:01:00:05:04],   0
+KLS, [01:06:06], 100100000000000000000000 41 00 00 00 00 00
+KLS, [01:06:15], 000000000000000000000000
+KLS, [01:06:21], 000000000000000000000000
+KLS, [01:06:22], 000000000000000000000000
+
+DL, [01:01:00:05:04], 100
+KLS, [01:06:06], 100100000000000000000010 41 00 00 00 00 10
+KLS, [01:06:15], 010000000000000000000000 04 00 00 00 00 00
+KLS, [01:06:21], 000000100000000000000000 00 10 00 00 00 00
+KLS, [01:06:22], 010000100000000000000000 04 10 00 00 00 00
+
+
+
+- four devices per packet
+  - devices are numbered starting at 1
+  - but indexed in packet starting at 0
+- inside packet section, bit mask to show which led is on
+- for each device there are 6 bytes (48 bits)
+  - LED mask: two (consecutive) bits per LED
+  - 00 = off
+    01 = on
+    10 = TODO: flash 1?
+    11 = TODO: flash 2?
+-  The 8-bit checksum is the 2's complement of the sum off all bytes. The checksum value, when added to the sum of all bytes produces a result of zero.
+  $ -sum(buffer) & 0xff
+
+
+- Device [01:06:04]: S. de Bains Amis
+  - Button position
+  +--------+
+  | 1      |
+  | 2      |
+  | 3      |
+  | 4      |
+  | 5      |
+  | 6      |
+  | 23  24 |
+  +--------+
+
+- Device [01:06:05]: S. de Bains Amis
+  - Button position
+  +--------+
+  | 1      |
+  | 2      |
+  | 3      |
+  | 4      |
+  | 5      |
+  | 6      |
+  | 7      |
+  +--------+
+
+- Device [01:06:21]: Sdb Douche cote Bureau
+  - Button 2: Shower
+  - Button 4: Volet
+  - Button 7: Bureau
+  - Button 9: Cosy
+
+  - Button position
+  +----------------+
+  | 6       1      |
+  | 7       2      |
+  | 8       3      |
+  | 9       4      |
+  | 10      5      |
+  |         23  24 |
+  +----------------+
+
+
+
+button presses of keypad "21" (20 with index 0, 0x14 in hex)
+b0 01 09 14 05 70 2d 90 00 00
+b0 02 09 14 05 02 5a d0 00 00
+b0 01 09 14 05 9a 86 0d 00 00
+b0 02 09 14 05 9a 77 1b 00 00
+b0 01 09 14 06 21 4d be 00 00
+b0 02 09 14 06 e7 34 10 00 00
+^  ^  ^  ^  ^  ?? ?? ^-Checksum
+|  |  |  |  Button number
+|  |  |  Keypad number
+|  |  Length (0x09 == 9, without last zero byte...)
+|  Type (01 == press, 02 == release, 04 == hold/long press, 03 == double-tap)
+Start
+
+"flash response" when keypad is disabled
+b0 89 0e 00 2c 20 46 38 0f 46 1c 0a 74 00
+^  ^  ^  ^  |---| |---------------| ^-Checksum
+|  |  |  |    ^     ^- garbage? artifacts from other messages at same offset
+|  |  |  |    TODO: unknown but const
+|  |  |  Keypad number
+|  |  Length (0x0e == 14)
+|  Type (89 == flash)
+Start
+
+  2 - b0 89 0e 00 2c 20 00 0a 00 00 1c 12 35 00
+ 19 - b0 89 0e 00 2c 20 00 0a 0a 00 1c 12 2b 00
+  2 - b0 89 0e 00 2c 20 00 15 00 00 1c 12 2a 00
+  3 - b0 89 0e 00 2c 20 00 15 15 00 1c 12 15 00
+  4 - b0 89 0e 00 2c 20 00 1f 15 00 06 12 21 00
+ 10 - b0 89 0e 00 2c 20 00 1f 15 00 1c 12 0b 00
+  2 - b0 89 0e 00 2c 20 46 38 0f 46 00 f0 aa 00
+  2 - b0 89 0e 00 2c 20 46 38 0f 46 01 00 99 00
+  6 - b0 89 0e 00 2c 20 46 38 0f 46 01 c0 d9 00
+  2 - b0 89 0e 00 2c 20 46 38 0f 46 01 f0 a9 00
+  3 - b0 89 0e 00 2c 20 46 38 0f 46 06 1a 7a 00
+ 29 - b0 89 0e 00 2c 20 46 38 0f 46 1c 0a 74 00
+  5 - b0 89 0e 00 2c 20 46 38 0f 46 1c 15 69 00
+  4 - b0 89 0e 00 2c 20 46 38 0f 46 1c 18 66 00
+  6 - b0 89 0e 00 2c 20 46 38 0f 46 1c 1f 5f 00
+
+
+
+- for 0:
+b0 06 06 00 44 00
+|  |  |  |  ^-Checksum
+b0 8e 0e 00 07 1e 46 38 0f 46 01 f0 cb 00
+^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^-Checksum
+|  |  |  |  |  |  |  |  |  |  |  LED mask
+|  |  |  |  |  |  |  |  |  |  Background brightness
+|  |  |  |  |  |  |  |  |  flash 2
+|  |  |  |  |  |  |  |  flash 1
+|  |  |  |  |  |  |  TODO: probably "local ACK time"
+|  |  |  |  |  |  Hold time
+|  |  |  |  |  Double-Tap time
+|  |  |  |  LED 'off' brightness
+|  |  |  Keypad number (0x15 == 21)
+|  |  Length (0x06 == 6, 0x0e == 14, without last zero byte...?)
+|  Type?
+Start
+
+LED mask (1-bits where *no* LED is present):
+* f0 = ST-4S-NI / ST-4SIR-NI
+* c0 = ST-6BRL-NI
+* 00 = ST-7B-NI
+
+
+- for 21:
+b0 06 06 15 2f 00 00
+|  |  |  |  ^-Checksum
+b0 8e 0e 15 0c 1e 46 38 0f 46 1c 0a 7c 00 00
+|  |  |  |  ^  ^  ^  ^  ^  ^  ^  ^  ^-Checksum
+|  |  |  |  |  |  |  |  |  |  |  copy of first background light byte (right column)
+|  |  |  |  |  |  |  |  |  |  Background brightness
+|  |  |  |  |  |  |  |  |  flash 2
+|  |  |  |  |  |  |  |  flash 1
+|  |  |  |  |  |  |  TODO: probably "local ACK time"
+|  |  |  |  |  |  Hold time
+|  |  |  |  |  Double-Tap time
+|  |  |  |  LED 'off' brightness
+b0 0a 06 15 2b 00 00
+|  |  |  |  ^-Checksum
+b0 9a 0e 15 0a 0a 00 0a 0a 00 1c 12 3d 00 00
+^  ^  ^  ^  |------| |------| ^  ^  ^-Checksum
+|  |  |  |   ^        ^       |  TODO: probably const "12" for european keypads
+|  |  |  |   |        |       Background brightness
+|  |  |  |   |        active buttons
+|  |  |  |   background light (Right-Left-Unused)
+|  |  |  Keypad number (0x15 == 21)
+|  |  Length (0x06 == 6, 0x0e == 14, without last zero byte...?)
+|  Type?
+Start
+
+"User preferences" (Defaults)
+LED flash 1: Extra fast {Extra Fast, Fast, Medium}
+LED flash 2: Medium Slow {Extra Slow, Medium Slow, Slow}
+LED 'off' brightness: Nightlight {Off, Nightlight}
+Background brightness: Medium {Off, Low, Medium, High}
+Hold time: Medium (0.5 s) {Short (0.35s), Medium (0.5s), Long (0.75s), Very Long (1.53s)}
+Double-Tap time: Fast (1/2 s) {Disabled, Fast (1/2s), Medium (3/4s), Slow (1s)}
+LED state toggle time (local ACK time): 0.75s
+
+# european style (square) keypads
+
+LED 'off' brightness:
+* 0x0c = Nightlight
+* 0x00 = Off
+
+Double-Tap time:
+* 0x00 = Disabled
+* 0x1e = Fast (1/2s)
+* 0x32 = Medium (3/4s)
+* 0x46 = Slow (1s)
+
+Hold time:
+* 0x32 = Short (0.35s)
+* 0x46 = Medium (0.5s)
+* 0x6e = Long (0.75s)
+* 0xc8 = Very Long (1.53s)
+
+LED flash 1:
+* 0x0f = Extra fast
+* 0x19 = Fast
+* 0x28 = Medium
+
+LED flash 2:
+* 0x46 = Medium Slow
+* 0x64 = Slow
+* 0x8c = Extra Slow
+
+Background brightness:
+* 0x00 = Off
+* 0x06 = Low
+* 0x1c = Medium
+* 0x1c = High (FAKE!!! is equal to "Medium")
+
+# american style (single column) keypads
+
+LED 'off' brightness:
+* 0x07 = Nightlight
+* 0x00 = Off
+
+Background brightness:
+* 0x03 = Off
+* 0x02 = Low
+* 0x01 = Medium
+* 0x00 = High
+
+
+HWI-CCO
+
+Pulse:
+b0 8a 0e 00 00 0b 00 00 00 00 00 00 ad 00
+^  ^  ^  ^  ^  ^                    ^-Checksum
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  Pulse time
+|  |  |  |  Relay number
+|  |  |  Device number
+|  |  Length (0x06 == 6, 0x0e == 14, without last zero byte...?)
+|  Type
+Start
+
+Pulse time:
+0x0b == 0.5s (CCOPULSE ... 1)
+0x0c == 1.0s
+0x0d == 1.5s
+0x0e == 2.0s
+0x0f == 2.5s
+0x10 == 3.0s
+0x11 == 3.5s
+0x12 == 4.0s
+0x13 == 4.5s
+0x14 == 5.0s (CCOPULSE ... 10)
+...
+
+
+LED bitmask for CCO modules:
+* the first two bytes are zero
+* the last two bytes encode the state of the Relay
+  - two bytes = 8 double-bits = 8 relays
+  - each double bit encodes one Relay
+  - 0b01 = relay open
+  - 0b10 = relay close
+* the two middle bytes are strange:
+  - like the last two bytes, but shifted by one double-bit
+  - position 0 is always 0b00
+  - position 1 contains 1. relay (i.e. index 0)
+  - position 2 contains 2. relay (i.e. index 1)
+  - position 3 contains 3. relay (i.e. index 2)
+  - ...
+  - position 7 contains 7. relay (i.e. index 6)
+  --> relay 8 is *not* present there
+00 00 54 55 55 55 all open
+00 00 54 59 55 56 close 5
+00 00 54 65 55 59 close 6
+00 00 54 95 55 65 close 7
+00 00 54 55 55 95 close 8
+
+comparing to telnet interface:
+"KLS" (KLMON) reporting corresponds to two middle bytes,
+(i.e. the mask starts at the 9th position)
+but 8. relay is in a "logical" position, i.e. following
+the 7th one and in the place of the first double-bit of
+the last two-bytes part.
+the last part, (corresponding to the last two bytes which
+would contain the complete information in the bus packet)
+are zero again.
+
+LNET> CCOCLOSE,[01:05:01],6
+KLS, [01:05:01], 000000000111112110000000
+
+LNET> CCOOPEN,[01:05:01],6
+KLS, [01:05:01], 000000000111111110000000
+
+LNET> CCOCLOSE,[01:05:01],5
+KLS, [01:05:01], 000000000111121110000000
+
+LNET> CCOOPEN,[01:05:01],5
+KLS, [01:05:01], 000000000111111110000000
+
+
+
+CCI:
+b0 06 06 00 44 00
+|  |  |  |  ^-Checksum
+b0 8e 0e 00 07 1e 46 38 0f 46 01 00 bb 00
+^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^-Checksum
+|  |  |  |  |  |  |  |  |  |  |  LED mask for keypads, makes no sense for CCI, so zero.
+|  |  |  |  |  |  |  |  |  |  Background brightness
+|  |  |  |  |  |  |  |  |  flash 2
+|  |  |  |  |  |  |  |  flash 1
+|  |  |  |  |  |  |  TODO: probably "local ACK time"
+|  |  |  |  |  |  Hold time
+|  |  |  |  |  Double-Tap time
+|  |  |  |  LED 'off' brightness
+|  |  |  Keypad number (0x15 == 21)
+|  |  Length (0x06 == 6, 0x0e == 14, without last zero byte...?)
+|  Type?
+Start
+
+
+garage hoch
+b0 01 09 00 00 5f 5f 88 00
+b0 04 09 00 05 00 00 3e 00
+b0 02 09 00 00 73 8f 43 00
+
+garage runter
+b0 01 09 00 01 65 58 88 00
+b0 04 09 00 06 00 00 3d 00
+b0 02 09 00 01 9c 86 22 00
